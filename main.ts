@@ -57,9 +57,9 @@ function enemySpawn () {
         ........................
         ........................
         `, SpriteKind.Enemy)
-    meanie.setPosition(151, 109)
+    meanie.setPosition(randint(0, 100), randint(0, 100))
     meanieLife = 3
-    meanie.follow(hero, 5)
+    meanie.follow(hero, 50)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     hero.setImage(assets.image`shieldup`)
@@ -180,9 +180,47 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 meanie.startEffect(effects.disintegrate)
                 sprites.destroy(meanie)
             }
+            if (hero.overlapsWith(meanie2)) {
+                meanie2life += -1
+                if (meanie2life == 0) {
+                    meanie2.startEffect(effects.disintegrate)
+                    sprites.destroy(meanie2)
+                }
+            }
         }
     }
 })
+function enemySpawn2 () {
+    meanie2 = sprites.create(img`
+        ........................
+        ........................
+        ........................
+        ........................
+        ..........ffff..........
+        ........ff1111ff........
+        .......fb111111bf.......
+        .......f11111111f.......
+        ......fd11111111df......
+        ......fd11111111df......
+        ......fddd1111dddf......
+        ......fbdbfddfbdbf......
+        ......fcdcf11fcdcf......
+        .......fb111111bf.......
+        ......fffcdb1bdffff.....
+        ....fc111cbfbfc111cf....
+        ....f1b1b1ffff1b1b1f....
+        ....fbfbffffffbfbfbf....
+        .........ffffff.........
+        ...........fff..........
+        ........................
+        ........................
+        ........................
+        ........................
+        `, SpriteKind.Enemy)
+    meanie2.setPosition(randint(0, 100), randint(0, 100))
+    meanie2life = 3
+    meanie2.follow(hero, 50)
+}
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
     if (hasSword == 0) {
         hasSword = 1
@@ -225,6 +263,35 @@ controller.B.onEvent(ControllerButtonEvent.Released, function () {
         `)
     shieldUp = 0
 })
+function lootSpawn () {
+    sword = sprites.create(img`
+        . . . . . b b b b b b . . . . . 
+        . . . b b 9 9 9 9 9 9 b b . . . 
+        . . b b 9 9 9 9 9 9 9 9 b b . . 
+        . b b 9 d 9 9 9 9 9 9 9 9 b b . 
+        . b 9 d 9 9 9 9 9 1 1 1 9 9 b . 
+        b 9 d d 9 9 9 9 9 1 1 1 9 9 9 b 
+        b 9 d 9 9 9 9 9 9 1 1 1 9 9 9 b 
+        b 9 3 9 9 9 9 9 9 9 9 9 1 9 9 b 
+        b 5 3 d 9 9 9 9 9 9 9 9 9 9 9 b 
+        b 5 3 3 9 9 9 9 9 9 9 9 9 d 9 b 
+        b 5 d 3 3 9 9 9 9 9 9 9 d d 9 b 
+        . b 5 3 3 3 d 9 9 9 9 d d 5 b . 
+        . b d 5 3 3 3 3 3 3 3 d 5 b b . 
+        . . b d 5 d 3 3 3 3 5 5 b b . . 
+        . . . b b 5 5 5 5 5 5 b b . . . 
+        . . . . . b b b b b b . . . . . 
+        `, SpriteKind.Food)
+    meanie2.setPosition(randint(0, 100), randint(0, 100))
+    hasSword = 1
+}
+function gameStart () {
+    game.splash("FIND THE SWORD, KILL THE ENEMIES. YOU HAVE 30 SECONDS. A TO ATTACK, B TO HOLD UP SHIELD.")
+    info.startCountdown(30)
+}
+let sword: Sprite = null
+let meanie2life = 0
+let meanie2: Sprite = null
 let shieldUp = 0
 let meanieLife = 0
 let meanie: Sprite = null
@@ -233,10 +300,12 @@ let hasSword = 0
 tiles.setCurrentTilemap(tilemap`level1`)
 playerSpawn()
 enemySpawn()
+enemySpawn2()
+gameStart()
 game.onUpdateInterval(1000, function () {
     if (meanie.overlapsWith(hero)) {
+        hero.startEffect(effects.hearts, 500)
         if (shieldUp == 0) {
-            hero.startEffect(effects.hearts, 500)
             info.changeLifeBy(-1)
         }
     }

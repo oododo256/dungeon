@@ -23,7 +23,7 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
-`, [myTiles.transparency16,sprites.dungeon.floorDark0,sprites.dungeon.floorLight2,sprites.dungeon.floorLightMoss,sprites.dungeon.floorLight5,sprites.dungeon.floorLight4,sprites.dungeon.floorLight1,sprites.dungeon.chestClosed], TileScale.Sixteen);
+`, [myTiles.transparency16,sprites.dungeon.floorDark0,sprites.dungeon.floorLight2,sprites.dungeon.floorLightMoss,sprites.dungeon.floorLight5,sprites.dungeon.floorLight4,sprites.dungeon.floorLight1,sprites.dungeon.floorLight0], TileScale.Sixteen);
         }
         return null;
     })
