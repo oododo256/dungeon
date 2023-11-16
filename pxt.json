@@ -1,5 +1,6 @@
 {
     "name": "dungeon game",
+    "version": "1.0.0",
     "description": "",
     "dependencies": {
         "device": "*",
