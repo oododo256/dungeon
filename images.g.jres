@@ -4,6 +4,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "shieldup"
     },
+    "image2": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAA8A8AAAAAAAD/DwAAAADw8P8AAAAAAPD/DwAAAAAAsP8AAAAAAADb+w8AAAAAsL0AAAAAAADbCwAAAAAAsL0AAAAAAADbCwAAAAAAsL0AAAAAAACwCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "sword"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

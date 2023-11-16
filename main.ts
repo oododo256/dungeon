@@ -57,9 +57,9 @@ function enemySpawn () {
         ........................
         ........................
         `, SpriteKind.Enemy)
-    meanie.setPosition(randint(0, 100), randint(0, 100))
+    meanie.setPosition(randint(0, 250), randint(0, 250))
     meanieLife = 3
-    meanie.follow(hero, 50)
+    meanie.follow(hero, 30)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     hero.setImage(assets.image`shieldup`)
@@ -179,17 +179,66 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             if (meanieLife == 0) {
                 meanie.startEffect(effects.disintegrate)
                 sprites.destroy(meanie)
+                deads += 1
             }
-            if (hero.overlapsWith(meanie2)) {
-                meanie2life += -1
-                if (meanie2life == 0) {
-                    meanie2.startEffect(effects.disintegrate)
-                    sprites.destroy(meanie2)
-                }
+        }
+        if (hero.overlapsWith(meanie2)) {
+            meanie2life += -1
+            if (meanie2life == 0) {
+                meanie2.startEffect(effects.disintegrate)
+                sprites.destroy(meanie2)
+                deads += 1
+            }
+        }
+        if (hero.overlapsWith(meanie3)) {
+            meanie3life += -1
+            if (meanie3life == 0) {
+                meanie3.startEffect(effects.disintegrate)
+                sprites.destroy(meanie3)
+                deads += 1
+            }
+        }
+        if (hero.overlapsWith(meanie4)) {
+            meanie4life += -1
+            if (meanie4life == 0) {
+                meanie4.startEffect(effects.disintegrate)
+                sprites.destroy(meanie4)
+                deads += 1
             }
         }
     }
 })
+function enemySpawn4 () {
+    meanie4 = sprites.create(img`
+        ........................
+        ........................
+        ........................
+        ........................
+        ..........ffff..........
+        ........ff1111ff........
+        .......fb111111bf.......
+        .......f11111111f.......
+        ......fd11111111df......
+        ......fd11111111df......
+        ......fddd1111dddf......
+        ......fbdbfddfbdbf......
+        ......fcdcf11fcdcf......
+        .......fb111111bf.......
+        ......fffcdb1bdffff.....
+        ....fc111cbfbfc111cf....
+        ....f1b1b1ffff1b1b1f....
+        ....fbfbffffffbfbfbf....
+        .........ffffff.........
+        ...........fff..........
+        ........................
+        ........................
+        ........................
+        ........................
+        `, SpriteKind.Enemy)
+    meanie4.setPosition(randint(0, 250), randint(0, 250))
+    meanie4life = 3
+    meanie4.follow(hero, 70)
+}
 function enemySpawn2 () {
     meanie2 = sprites.create(img`
         ........................
@@ -217,14 +266,13 @@ function enemySpawn2 () {
         ........................
         ........................
         `, SpriteKind.Enemy)
-    meanie2.setPosition(randint(0, 100), randint(0, 100))
+    meanie2.setPosition(randint(0, 250), randint(0, 250))
     meanie2life = 3
     meanie2.follow(hero, 50)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
     if (hasSword == 0) {
         hasSword = 1
-        game.splash("Found: 1 Iron Sword")
     }
 })
 info.onLifeZero(function () {
@@ -233,7 +281,44 @@ info.onLifeZero(function () {
     sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
     playerSpawn()
     enemySpawn()
+    enemySpawn2()
+    enemySpawn3()
+    enemySpawn4()
+    gameStart()
+    swordSpawn()
+    deads = 0
 })
+function enemySpawn3 () {
+    meanie3 = sprites.create(img`
+        ........................
+        ........................
+        ........................
+        ........................
+        ..........ffff..........
+        ........ff1111ff........
+        .......fb111111bf.......
+        .......f11111111f.......
+        ......fd11111111df......
+        ......fd11111111df......
+        ......fddd1111dddf......
+        ......fbdbfddfbdbf......
+        ......fcdcf11fcdcf......
+        .......fb111111bf.......
+        ......fffcdb1bdffff.....
+        ....fc111cbfbfc111cf....
+        ....f1b1b1ffff1b1b1f....
+        ....fbfbffffffbfbfbf....
+        .........ffffff.........
+        ...........fff..........
+        ........................
+        ........................
+        ........................
+        ........................
+        `, SpriteKind.Enemy)
+    meanie3.setPosition(randint(0, 250), randint(0, 250))
+    meanie3life = 3
+    meanie3.follow(hero, 35)
+}
 controller.B.onEvent(ControllerButtonEvent.Released, function () {
     hero.setImage(img`
         ........................
@@ -263,6 +348,16 @@ controller.B.onEvent(ControllerButtonEvent.Released, function () {
         `)
     shieldUp = 0
 })
+function swordSpawn () {
+    sword = sprites.create(assets.image`sword`, SpriteKind.Food)
+    sword.setPosition(randint(0, 250), randint(0, 250))
+}
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    hasSword = 1
+    game.splash("Found: 1 Iron Sword")
+    sword.startEffect(effects.halo)
+    sprites.destroy(sword)
+})
 function lootSpawn () {
     sword = sprites.create(img`
         . . . . . b b b b b b . . . . . 
@@ -290,6 +385,10 @@ function gameStart () {
     info.startCountdown(30)
 }
 let sword: Sprite = null
+let meanie4life = 0
+let meanie4: Sprite = null
+let meanie3life = 0
+let meanie3: Sprite = null
 let meanie2life = 0
 let meanie2: Sprite = null
 let shieldUp = 0
@@ -297,16 +396,43 @@ let meanieLife = 0
 let meanie: Sprite = null
 let hero: Sprite = null
 let hasSword = 0
+let deads = 0
+deads = 0
 tiles.setCurrentTilemap(tilemap`level1`)
 playerSpawn()
 enemySpawn()
 enemySpawn2()
+enemySpawn3()
+enemySpawn4()
 gameStart()
+swordSpawn()
 game.onUpdateInterval(1000, function () {
     if (meanie.overlapsWith(hero)) {
         hero.startEffect(effects.hearts, 500)
         if (shieldUp == 0) {
             info.changeLifeBy(-1)
         }
+    }
+    if (meanie2.overlapsWith(hero)) {
+        hero.startEffect(effects.hearts, 500)
+        if (shieldUp == 0) {
+            info.changeLifeBy(-1)
+        }
+    }
+    if (meanie3.overlapsWith(hero)) {
+        hero.startEffect(effects.hearts, 500)
+        if (shieldUp == 0) {
+            info.changeLifeBy(-1)
+        }
+    }
+    if (meanie4.overlapsWith(hero)) {
+        hero.startEffect(effects.hearts, 500)
+        if (shieldUp == 0) {
+            info.changeLifeBy(-1)
+        }
+    }
+    if (deads == 4) {
+        game.gameOver(true)
+        deads = 0
     }
 })
